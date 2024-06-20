@@ -1,0 +1,3 @@
+Update function <battle> to exit fight if monster is killed before they can attack
+add character classes
+add skill list based on class and add skill option to actions list

@@ -1,32 +1,46 @@
 import sys
+import random
 from classes import person, enemy, inventoryItem
 
-def take_item(item_user: person, item: inventoryItem):
-    item_user.inventory.append(item)
+def create_enemy(monsters: list[tuple[str, int, int, int]]) -> enemy:
+    random_monster = random.choice(monsters)
+    # print(random_monster)
+    # print(type(random_monster[0]))
+    # print(random_monster[0])
+    # print(type(random_monster[1]))
+    # print(random_monster[1])
+    # print(type(random_monster[2]))
+    # print(random_monster[2])
+    # print(type(random_monster[3]))
+    # print(random_monster[3])
+    new_enemy = enemy(name = random_monster[0], base_health = random_monster[1], base_attack_damage = random_monster[2], base_experience_bounty = random_monster[3])
+    return new_enemy
 
-def use_item(item_user: person, item: inventoryItem) -> None:
-    pass
+# def take_item(item_user: person, item: inventoryItem):
+#     item_user.inventory.append(item)
+
+# def use_item(item_user: person, item: inventoryItem) -> None:
 #     item_user.health += item.health_boost
 #     item_user.attack_damage += item.attack_boost
 
-def equip_item(item_user: person, item: inventoryItem):
-    if item.equipped_status: 
-        print(f"{item.name} is already equipped.")
-    else:
-        item.equipped_status = True
-        item_user.health += item.health_boost
-        item_user.attack_damage += item.attack_boost
+# def equip_item(item_user: person, item: inventoryItem):
+#     if item.equipped_status: 
+#         print(f"{item.name} is already equipped.")
+#     else:
+#         item.equipped_status = True
+#         item_user.health += item.health_boost
+#         item_user.attack_damage += item.attack_boost
 
-def unequip_item(item_user: person, item: inventoryItem):
-    if item.equipped_status: 
-        item.equipped_status = True
-        item_user.health -= item.health_boost
-        item_user.attack_damage -= item.attack_boost
-    else:
-        print(f"{item.name} is not equipped.")
+# def unequip_item(item_user: person, item: inventoryItem):
+#     if item.equipped_status: 
+#         item.equipped_status = True
+#         item_user.health -= item.health_boost
+#         item_user.attack_damage -= item.attack_boost
+#     else:
+#         print(f"{item.name} is not equipped.")
 
-def select_item(item_user: person, item: inventoryItem):
-    pass
+# def select_item(item_user: person, item: inventoryItem):
+#     pass
 
 def fight(player_damage: int, player: person, enemy: enemy) -> None:
     enemy.take_damage(player_damage)
@@ -35,6 +49,7 @@ def fight(player_damage: int, player: person, enemy: enemy) -> None:
     player.take_damage(enemy_damage)
     print(f"{enemy.name} hit you and dealt {enemy_damage} damage! \nPLAYER HP: {player.health}/{player.max_health}\n")
 
+# TODO: Need to exit fight monster is killed before they can attack
 def battle(player: person, enemy: enemy):
     print("===== BATTLE START =====\n")
     print(f"A {enemy.name} has appeared!\n")

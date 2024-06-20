@@ -35,6 +35,9 @@ class person:
         else:
             print("You are out of potions.")
 
+    def display_info(self) -> None:
+        print(f"===== PLAYER INFO =====\nHP: {self.health}/{self.max_health} // LEVEL: {self.level} // POTIONS AVAILABLE: {self.potion_count} // PLAYER EXP: {self.experience}\n")
+
     def level_up(self) -> None:
         self.level += 1
         self.max_health += 20
@@ -46,18 +49,17 @@ class person:
         if self.level == 3:
             print("New ability unlocked: Kick (K to use)")
 
-    def display_info(self) -> None:
-        print(f"===== PLAYER INFO =====\nHP: {self.health}/{self.max_health} // LEVEL: {self.level} // POTIONS AVAILABLE: {self.potion_count} // PLAYER EXP: {self.experience}\n")
-
-
 @dataclass
 class enemy:
     name: str
     level: int = 1
-    max_health: int = 50 + (20 * (level - 1))
+    base_health: int = 50
+    max_health: int = base_health + (20 * (level - 1))
     health: int = max_health
-    attack_damage: int = 10
-    experience_bounty: int = 50 * level
+    base_attack_damage: int = 10
+    attack_damage: int = base_attack_damage + (5 * (level - 1))
+    base_experience_bounty: int = 50
+    experience_bounty: int = base_experience_bounty * level
 
     def attack(self) -> int:
         return self.attack_damage + random.randint(-10, 10)
