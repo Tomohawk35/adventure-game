@@ -4,15 +4,16 @@ import random
 @dataclass
 class person:
     name: str
+    character_class: str
+    level: int = 1
     max_health: int = 50
     health: int = max_health
     attack_damage: int = 20
-    level: int = 1
     experience: int = 0
     experience_cap: int = 100 * level
     potion_count: int = 3
     inventory = []
-    # attack_choices: dict[str, str] = ["A": "Attack"]
+    # attack_choices: list[str, str] = [("A": "Attack"), ("P": "Use Potion")]
 
     def attack(self) -> int:
         return self.attack_damage + random.randint(-10, 10)

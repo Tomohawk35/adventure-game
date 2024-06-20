@@ -2,17 +2,11 @@ import sys
 import random
 from classes import person, enemy, inventoryItem
 
+def create_hero(input_name: str, input_class: str):
+    return person(name=input_name, character_class=input_class.title())
+
 def create_enemy(monsters: list[tuple[str, int, int, int]]) -> enemy:
     random_monster = random.choice(monsters)
-    # print(random_monster)
-    # print(type(random_monster[0]))
-    # print(random_monster[0])
-    # print(type(random_monster[1]))
-    # print(random_monster[1])
-    # print(type(random_monster[2]))
-    # print(random_monster[2])
-    # print(type(random_monster[3]))
-    # print(random_monster[3])
     new_enemy = enemy(name = random_monster[0], base_health = random_monster[1], base_attack_damage = random_monster[2], base_experience_bounty = random_monster[3])
     return new_enemy
 

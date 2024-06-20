@@ -1,3 +1,13 @@
-Update function <battle> to exit fight if monster is killed before they can attack
-add character classes
-add skill list based on class and add skill option to actions list
+
+== Character Classes ==
+[-] Add default items per class
+[-] Add default skills per class
+
+== Action List ==
+[-] Add (S) Skill to action list
+[-] Add (I) Inspect to action list (applicable to both enemies and items found)
+[-] Change hotkey for show player info in action list
+
+== Combat ==
+[-] Update battle function to exit fight if monster is killed before they can attack
+[-] Incorporate speed into game?
