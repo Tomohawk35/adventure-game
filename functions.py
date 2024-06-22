@@ -1,9 +1,14 @@
 import sys
 import random
-from classes import person, enemy, inventoryItem
+from classes import person, enemy
 
-def create_hero(input_name: str, input_class: str):
-    return person(name=input_name, character_class=input_class.title())
+character_classes: list[str, int, int, int] = [("Knight", 15, 8, 10), 
+                                               ("Wizard", 8, 15, 10), 
+                                               ("Ranger", 10, 8, 15)]
+
+def create_hero(input_name: str, input_class: int):
+    chosen_class = character_classes[input_class - 1]
+    return person(name=input_name, character_class=chosen_class[0], strength=chosen_class[1], intelligence=chosen_class[2], dexterity=chosen_class[3])
 
 def create_enemy(monsters: list[tuple[str, int, int, int]]) -> enemy:
     random_monster = random.choice(monsters)
@@ -17,31 +22,27 @@ def create_enemy(monsters: list[tuple[str, int, int, int]]) -> enemy:
 #     item_user.health += item.health_boost
 #     item_user.attack_damage += item.attack_boost
 
-# def equip_item(item_user: person, item: inventoryItem):
-#     if item.equipped_status: 
-#         print(f"{item.name} is already equipped.")
-#     else:
-#         item.equipped_status = True
-#         item_user.health += item.health_boost
-#         item_user.attack_damage += item.attack_boost
-
-# def unequip_item(item_user: person, item: inventoryItem):
-#     if item.equipped_status: 
-#         item.equipped_status = True
-#         item_user.health -= item.health_boost
-#         item_user.attack_damage -= item.attack_boost
-#     else:
-#         print(f"{item.name} is not equipped.")
-
 # def select_item(item_user: person, item: inventoryItem):
 #     pass
+def check_hit(attacker: person | enemy, defender: person | enemy) -> bool:
+    # May need more balancing. if acc ~ eva, almost 100% to hit
+    attack_accuracy: float = attacker.accuracy / defender.evasion
+    return attack_accuracy > random.random()
 
-def fight(player_damage: int, player: person, enemy: enemy) -> None:
-    enemy.take_damage(player_damage)
-    print(f"You hit {enemy.name} and dealt {player_damage} damage! \nENEMY HP: {enemy.health}/{enemy.max_health}\n")
-    enemy_damage = enemy.attack()
-    player.take_damage(enemy_damage)
-    print(f"{enemy.name} hit you and dealt {enemy_damage} damage! \nPLAYER HP: {player.health}/{player.max_health}\n")
+def player_hit(damage: int, player: person, enemy: enemy) -> None:
+    if check_hit(player, enemy):
+        print(f"You hit {enemy.name} and dealt {damage} damage! \nENEMY HP: {enemy.health}/{enemy.max_health}\n")
+        enemy.take_damage(damage)
+    else:
+        print("Your attack missed. Aim better")
+
+def enemy_hit(player: person, enemy: enemy) -> None:
+    if check_hit(enemy, player):
+        enemy_damage: int = enemy.attack()
+        print(f"{enemy.name} hit you and dealt {enemy_damage} damage! \nPLAYER HP: {player.health}/{player.max_health}\n")
+        player.take_damage(enemy_damage)
+    else:
+        print(f"You dodged {enemy.name}'s attack.")
 
 # TODO: Need to exit fight monster is killed before they can attack
 def battle(player: person, enemy: enemy):
@@ -55,15 +56,19 @@ def battle(player: person, enemy: enemy):
         match action_choice:
             case "a":
                 player_damage = player.attack()
-                fight(player_damage, player, enemy)
+                player_hit(damage=player_damage, player=player, enemy=enemy)
+                enemy_hit(player=player, enemy=enemy)
             case "k":
                 if player.level >= 3:
                     player_damage = player.kick()
-                    fight(player_damage, player, enemy)
+                    player_hit(damage=player_damage, player=player, enemy=enemy)
+                    enemy_hit(player=player, enemy=enemy)
                 else:
                     print("Careful! You aren't strong enough for that yet.")
             case "p":
+                # TODO: Add check for what kind of potion to use and don't prompt enemy attack unless potion is actually used
                 player.use_potion()
+                enemy_hit(player=player, enemy=enemy)
             case "i":
                 player.display_info()
             case "e":
@@ -71,11 +76,8 @@ def battle(player: person, enemy: enemy):
         print("   ///////////////////////////////////////////////////////////////\n")
 
     if enemy.health <= 0:
-        print(f"You've slain the enemy {enemy.name}! Well done!\n")
+        print(f"You've slain the enemy {enemy.name}! You gained {enemy.experience_bounty} experience!\n")
         player.experience += enemy.experience_bounty
         if player.experience >= player.experience_cap:
             player.level_up()
 
-    elif player.health <= 0:
-        print("You fought valiantly but were defeated! \n\n ====== GAME OVER ======")
-        sys.exit()

@@ -2,6 +2,10 @@
 == Character Classes ==
 [-] Add default items per class
 [-] Add default skills per class
+[-] Add armor and resistances
+[-] Add drop lists for monster types
+[-] Add rarities for monsters and associated weighting for spawns
+[-] Create equipment slots for character
 
 == Action List ==
 [-] Add (S) Skill to action list
@@ -9,5 +13,8 @@
 [-] Change hotkey for show player info in action list
 
 == Combat ==
-[-] Update battle function to exit fight if monster is killed before they can attack
 [-] Incorporate speed into game?
+[-] Need way to determine when to spawn a boss
+
+
+END GOAL: 2D version of PoE with freeform combat and skill specialization
